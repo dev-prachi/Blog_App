@@ -1,0 +1,87 @@
+ /* ── global.css — shared styles across all pages ── */
+
+body {
+  background: #f8f9fa;
+  font-family: 'Inter', sans-serif;
+  color: #212529;
+}
+
+/* ── Form card wrapper — used in addBlog and editBlog ── */
+.form-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  padding: 2.5rem;
+  max-width: 760px;
+  margin: 2.5rem auto;
+}
+
+.form-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #212529;
+}
+
+.form-card .subtitle {
+  color: #6b7280;
+  font-size: 0.93rem;
+  margin-bottom: 1.8rem;
+}
+
+/* ── Form labels ── */
+.form-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 0.4rem;
+}
+
+/* ── All inputs and textareas ── */
+.form-control {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fafafa;
+}
+
+.form-control:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  background: #fff;
+  outline: none;
+}
+
+/* ── Submit button — used in addBlog and editBlog ── */
+.btn-submit {
+  background: #212529;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-submit:hover {
+  background: #111;
+  transform: translateY(-1px);
+}
+
+/* ── Error alert box ── */
+.alert-error {
+  background: #fff0f0;
+  border: 1.5px solid #fecaca;
+  color: #ef4444;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}

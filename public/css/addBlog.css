@@ -1,0 +1,60 @@
+/* ── addBlog.css — add blog page specific styles ── */
+
+#body {
+  min-height: 220px;
+  resize: vertical;
+}
+
+/* ── AI generator section ── */
+.ai-row {
+  background: #f0f1ff;
+  border: 1.5px dashed #a5b4fc;
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.ai-row .ai-label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #6366f1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-ai {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1.3rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+  margin-top: 0.7rem;
+}
+
+.btn-ai:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+.btn-ai.loading {
+  opacity: 0.75;
+  pointer-events: none;
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.75; }
+  50%       { opacity: 0.45; }
+}

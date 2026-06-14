@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/global.css"/>
+    <link rel="stylesheet" href="/css/editBlog.css"/>
+    <title>Edit Blog</title>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+
+    <div class="form-card">
+      <h2>Edit Blog</h2>
+      <p class="subtitle">Update your blog post.</p>
+
+      <form action="/blog/edit/<%= blog._id %>" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Current Cover Image</label>
+          <img src="<%= blog.coverImageURL %>" class="current-image" alt="current cover"/>
+          <span class="current-image-label">Upload a new image to replace it (optional)</span>
+          <input type="file" class="form-control" id="coverImage" name="coverImage"/>
+        </div>
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="title" name="title" value="<%= blog.title %>"/>
+        </div>
+        <div class="mb-3">
+          <label for="body" class="form-label">Body</label>
+          <textarea name="body" class="form-control" id="body"><%= blog.body %></textarea>
+        </div>
+        <div class="mb-3">
+          <button type="submit" class="btn-submit">Save Changes</button>
+          <a href="/blog/<%= blog._id %>" class="btn-cancel">Cancel</a>
+        </div>
+      </form>
+    </div>
+
+    <%- include('./partials/script') %>
+  </body>
+</html>

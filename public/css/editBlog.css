@@ -1,0 +1,35 @@
+/* ── editBlog.css — edit blog page specific styles ── */
+
+#body {
+  min-height: 220px;
+  resize: vertical;
+}
+
+/* ── Current cover image preview ── */
+.current-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.6rem;
+}
+
+.current-image-label {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+/* ── Cancel link ── */
+.btn-cancel {
+  color: #6b7280;
+  font-size: 0.9rem;
+  text-decoration: none;
+  margin-left: 1rem;
+  font-weight: 500;
+}
+
+.btn-cancel:hover {
+  color: #212529;
+}
