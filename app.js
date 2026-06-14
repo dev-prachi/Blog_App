@@ -9,7 +9,6 @@ const Blog = require("./models/blog");
 const userRoute= require("./routes/user");
 const blogRoute = require("./routes/blog");
 
-
 const { checkAuthenticationCookie } = require("./middlewares/authentication");
 
 dotenv.config();
@@ -32,41 +31,27 @@ app.use(cookieParser());
 app.use(checkAuthenticationCookie('token'));
 app.use(express.static(path.resolve('./public')));
 
-
 app.get('/', async(req, res) =>{
     const searchQuery = req.query.search || "";
     
-    // Read page number from URL — e.g. /?page=2
-    // If no page in URL, default to page 1
-    // Number() converts string "2" to number 2
     const page = Number(req.query.page) || 1;
     
-    // How many blogs to show per page
     const blogsPerPage = 6;
     
-    // How many blogs to skip — page 1 skips 0, page 2 skips 6, page 3 skips 12
     const skip = (page - 1) * blogsPerPage;
 
-    // Build search filter — same as before
     const filter = searchQuery.trim() === ""
         ? {}
         : { title: { $regex: searchQuery, $options: "i" } };
 
-    // Count total blogs matching filter — needed to calculate total pages
     const totalBlogs = await Blog.countDocuments(filter);
-
-    // Calculate total number of pages
-    // Math.ceil rounds up — 13 blogs / 6 per page = 2.16 → 3 pages
     const totalPages = Math.ceil(totalBlogs / blogsPerPage);
 
-    // Fetch only the blogs for current page
-    // .skip() skips previous pages' blogs
-    // .limit() takes only blogsPerPage number of blogs
     const allBlogs = await Blog.find(filter)
         .populate("createdBy")
         .skip(skip)
         .limit(blogsPerPage)
-        .sort({ createdAt: -1 }); // newest blogs first
+        .sort({ createdAt: -1 }); 
 
     const error = req.query.error;
     let errorMessage = null;
@@ -79,7 +64,6 @@ app.get('/', async(req, res) =>{
         blogs: allBlogs,
         errorMessage,
         searchQuery,
-        // Pass pagination data to EJS
         currentPage: page,
         totalPages,
         totalBlogs,

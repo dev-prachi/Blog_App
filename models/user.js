@@ -38,15 +38,13 @@ const userSchema= new Schema({
 );
 
 userSchema.pre("save", function (next){
-    const user= this;  // this poniting to current user
+    const user= this;  
 
-    if(!user.isModified("password")) return next(); // if path password not midified by user then return
+    if(!user.isModified("password")) return next(); 
 
     const salt= randomBytes(16).toString();
-    // const salt= randomBytes(16).toString();
-                        // salt  is a  random string of 16 byts size (salt is a secret key for diff users , diff key )
-    const hashedPassword= createHmac("sha256", salt)      // changing passuser plain password into hash value 
-    // with "sha256" algo and a secret key "salt"
+
+    const hashedPassword= createHmac("sha256", salt)     
         .update(user.password)
         .digest("hex");
 

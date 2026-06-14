@@ -19,10 +19,7 @@ const blogSchema = new Schema(
       ref: "user",
     },
 
-    // ── LIKES FEATURE ──
-    // stores array of user IDs who liked this blog
-    // e.g. ["507f1f", "507f2a", "507f3b"]
-    // using Set prevents same user liking twice
+    
     likes: [
       {
         type: Schema.Types.ObjectId,
