@@ -1,38 +1,51 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { Router } = require("express");
 const multer = require("multer");
 const path = require("path");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 const Blog = require("../models/blog");
 const Comment = require("../models/comment");
-
+console.log("Cloud name:", process.env.CLOUDINARY_CLOUD_NAME);
+console.log("API Key:", process.env.CLOUDINARY_API_KEY);
 const router = Router();
 
-// ── Multer storage config ──────────────────────────────────
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.resolve(`./public/uploads/`));
-  },
-  filename: function (req, file, cb) {
-    const fileName = `${Date.now()}-${file.originalname}`;
-    cb(null, fileName);
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "blogify",        
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    transformation: [{ width: 1200, quality: "auto" }], // auto optimize image
   },
 });
 
+// ── Multer storage config 
+
 const upload = multer({ storage: storage });
 
-// ── Layer 1 — requireLogin middleware ──────────────────────
-// Add this once here — reuse on every protected route below
+process.on("uncaughtException", (err) => {
+  if (err.message === "Request aborted") return; 
+  console.error(err); 
+});
+
 function requireLogin(req, res, next) {
   if (!req.user) {
-    // User is not logged in — send to signin page
+    
     return res.redirect("/user/signin");
   }
-  next(); // User is logged in — continue to route handler
+  next(); 
 }
 
-// ── SPECIFIC ROUTES FIRST (before /:id) ───────────────────
-
+// ── SPECIFIC ROUTES FIRST (before /:id) 
 router.get("/add-new", requireLogin, (req, res) => {
   return res.render("addBlog", { user: req.user });
 });
@@ -103,7 +116,6 @@ router.post("/edit/:id", requireLogin, upload.single("coverImage"), async (req, 
 
   if (!blog) return res.redirect("/");
 
-  // Only creator can edit
   if (blog.createdBy.toString() !== req.user._id.toString()) {
     return res.redirect("/?error=notallowed");
   }
@@ -112,7 +124,8 @@ router.post("/edit/:id", requireLogin, upload.single("coverImage"), async (req, 
   blog.body  = req.body.body;
 
   if (req.file) {
-    blog.coverImageURL = `/uploads/${req.file.filename}`;
+    
+    blog.coverImageURL = req.file.path;
   }
 
   await blog.save();
@@ -130,7 +143,9 @@ router.post("/", requireLogin, upload.single("coverImage"), async (req, res) => 
   }
 
   const coverImageURL = req.file
-    ? `/uploads/${req.file.filename}`
+    ? req.file.path
+    : req.body.coverImageURL && req.body.coverImageURL.trim()
+    ? req.body.coverImageURL.trim()
     : `/images/default.png`;
 
   const blog = await Blog.create({
@@ -142,8 +157,7 @@ router.post("/", requireLogin, upload.single("coverImage"), async (req, res) => 
   return res.redirect(`/blog/${blog._id}`);
 });
 
-// ── DYNAMIC /:id ROUTE LAST ────────────────────────────────
-// Must be at bottom — matches ANY string so must come after all specific routes
+// ── DYNAMIC /:id ROUTE LAST 
 
 router.post("/like/:id", requireLogin, async (req, res) => {
   // Find the blog by its ID
