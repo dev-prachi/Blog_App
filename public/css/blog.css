@@ -206,3 +206,111 @@
   color: #4b5563;
   white-space: pre-wrap;
 }
+
+/* ── Comment edit form input ── */
+.comment-edit-input {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.93rem;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fafafa;
+  margin-bottom: 0.4rem;
+}
+
+.comment-edit-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  outline: none;
+  background: #fff;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 0.5rem;
+}
+
+.btn-comment-edit {
+  background: #fff7ed;
+  color: #f97316;
+  border: 1.5px solid #fed7aa;
+  border-radius: 6px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+
+.btn-comment-edit:hover {
+  background: #ffedd5;
+}
+
+.btn-comment-delete {
+  background: #fff0f0;
+  color: #ef4444;
+  border: 1.5px solid #fecaca;
+  border-radius: 6px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+
+.btn-comment-delete:hover {
+  background: #fee2e2;
+}
+
+.btn-comment-save {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+
+.btn-comment-save:hover {
+  background: #4f46e5;
+}
+
+.btn-comment-cancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+
+.btn-comment-cancel:hover {
+  background: #e5e7eb;
+}
+
+.comment-edit-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 0.4rem;
+}

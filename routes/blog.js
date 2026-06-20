@@ -160,7 +160,6 @@ router.post("/", requireLogin, upload.single("coverImage"), async (req, res) => 
 // ── DYNAMIC /:id ROUTE LAST 
 
 router.post("/like/:id", requireLogin, async (req, res) => {
-  // Find the blog by its ID
   const blog = await Blog.findById(req.params.id);
 
   if (!blog) return res.redirect("/");
@@ -174,6 +173,36 @@ router.post("/like/:id", requireLogin, async (req, res) => {
  return res.redirect(req.headers.referer || "/");
 });
 
+// ── DELETE COMMENT ROUTE ──
+router.post("/comment/delete/:commentId", requireLogin, async (req, res) => {
+  const comment = await Comment.findById(req.params.commentId);
+
+  if (!comment) return res.redirect("back");
+
+  if (comment.createdBy.toString() !== req.user._id.toString()) {
+    return res.redirect("back");
+  }
+
+  await Comment.findByIdAndDelete(req.params.commentId);
+
+  return res.redirect(`/blog/${comment.blogId}`);
+});
+
+// ── EDIT COMMENT ROUTE ──
+router.post("/comment/edit/:commentId", requireLogin, async (req, res) => {
+  const comment = await Comment.findById(req.params.commentId);
+
+  if (!comment) return res.redirect("back");
+
+  if (comment.createdBy.toString() !== req.user._id.toString()) {
+    return res.redirect("back");
+  }
+
+  comment.content = req.body.content;
+  await comment.save();
+
+  return res.redirect(`/blog/${comment.blogId}`);
+});
 
 router.get("/:id", async (req, res) => {
   const blog = await Blog.findById(req.params.id).populate("createdBy");

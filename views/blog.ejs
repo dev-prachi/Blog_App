@@ -31,7 +31,6 @@
             </div>
           </div>
 
-          <!-- Like button -->
           <% if (locals.user) { %>
             <% const hasLiked = blog.likes.some(id => id.toString() === user._id.toString()); %>
             <form action="/blog/like/<%= blog._id %>" method="post" style="margin:0">
@@ -48,7 +47,6 @@
             </span>
           <% } %>
 
-          <!-- Edit + Delete — creator only -->
           <% if (locals.user && blog.createdBy._id.toString() === user._id.toString()) { %>
           <div class="blog-actions">
             <a href="/blog/edit/<%= blog._id %>" class="btn-edit-blog">
@@ -89,21 +87,79 @@
       <% } %>
 
       <div class="mt-3">
-        <% comments.forEach(comment => { %>
-        <div class="comment-item">
-          <img src="<%= comment.createdBy.profileImageURL %>" alt="commenter" />
-          <div>
-            <div class="comment-meta">
-              <i class="bi bi-person" style="color:#6366f1;"></i>
-              <%= comment.createdBy.fullName %>
-            </div>
-            <div class="comment-text"><%= comment.content %></div>
-          </div>
-        </div>
-        <% }) %>
+  <% comments.forEach(comment => { %>
+  <div class="comment-item">
+    <img src="<%= comment.createdBy.profileImageURL %>" alt="commenter" />
+    <div style="flex:1;">
+
+      <div class="comment-meta">
+        <i class="bi bi-person" style="color:#6366f1;"></i>
+        <%= comment.createdBy.fullName %>
       </div>
+
+      <div class="comment-text" id="comment-text-<%= comment._id %>">
+        <%= comment.content %>
+      </div>
+
+      <form
+        action="/blog/comment/edit/<%= comment._id %>"
+        method="post"
+        id="edit-form-<%= comment._id %>"
+        style="display:none; margin-top:0.5rem;"
+      >
+        <input
+          type="text"
+          name="content"
+          value="<%= comment.content %>"
+          class="comment-edit-input"
+        />
+        <div class="comment-edit-actions">
+          <button type="submit" class="btn-comment-save">
+            <i class="bi bi-check"></i> Save
+          </button>
+          <button type="button"
+            class="btn-comment-cancel"
+            onclick="cancelEdit('<%= comment._id %>')">
+            Cancel
+          </button>
+        </div>
+      </form>
+
+      <% if (locals.user && comment.createdBy._id.toString() === user._id.toString()) { %>
+      <div class="comment-actions">
+
+        <button onclick="showEdit('<%= comment._id %>')" class="btn-comment-edit">
+          <i class="bi bi-pencil"></i> Edit
+        </button>
+
+        <form action="/blog/comment/delete/<%= comment._id %>" method="post" style="margin:0">
+          <button type="submit" class="btn-comment-delete"
+            onclick="return confirm('Delete this comment?')">
+            <i class="bi bi-trash"></i> Delete
+          </button>
+        </form>
+
+      </div>
+      <% } %>
+
+    </div>
+  </div>
+  <% }) %>
+</div>
     </div>
 
+    <script>
+        
+        function showEdit(commentId) {
+          document.getElementById("comment-text-" + commentId).style.display = "none";
+          document.getElementById("edit-form-" + commentId).style.display = "block";
+        }
+
+        function cancelEdit(commentId) {
+          document.getElementById("comment-text-" + commentId).style.display = "block";
+          document.getElementById("edit-form-" + commentId).style.display = "none";
+        }
+    </script>
     <%- include('./partials/script') %>
   </body>
 </html>
