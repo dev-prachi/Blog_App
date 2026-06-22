@@ -69,9 +69,9 @@ router.post("/generate-ai", async (req, res) => {
   if (!topic) {
     return res.status(400).json({ error: "Topic is required" });
   }
-
+try{
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = `Write a blog post about: "${topic}".
 Return ONLY in this exact format with no extra text:
@@ -85,7 +85,16 @@ BODY: <the full blog content here, at least 3 paragraphs>`;
   const body  = text.split("BODY:")[1]?.trim();
 
   return res.json({ title, body });
-});
+ } catch (error) {
+    // Send proper JSON error instead of crashing
+    // This fixes "Unexpected token '<'" error in browser
+    console.error("Gemini API error:", error.message);
+    return res.status(503).json({ 
+      error: "AI generation failed. Please try again in a moment." 
+    });
+  }
+}
+);
 
 router.post("/comment/:blogId", requireLogin, async (req, res) => {
   await Comment.create({
