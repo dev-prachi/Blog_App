@@ -1,4 +1,10 @@
 const dotenv= require("dotenv");
+const fs = require("fs");
+const uploadDir = path.resolve("./public/uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log("Uploads folder created!");
+}
 const express= require("express");
 const path= require("path");
 const mongoose = require("mongoose");
@@ -11,12 +17,6 @@ const blogRoute = require("./routes/blog");
 
 const { checkAuthenticationCookie } = require("./middlewares/authentication");
 
-const fs = require("fs");
-const uploadDir = path.resolve("./public/uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-  console.log("Uploads folder created!");
-}
 dotenv.config();
 
 const app= express();
